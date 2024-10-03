@@ -27,8 +27,6 @@ function AddTransactionModal({ show, onClose }: AddTransactionModalProps) {
 
   })
 
-  console.log('data: ', data)
-
   useEffect(() => { onClose() }, [wasSuccessful])
 
   const handleSubmit = () => {

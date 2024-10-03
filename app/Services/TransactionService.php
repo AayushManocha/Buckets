@@ -15,6 +15,8 @@ class TransactionService
     return DB::table('transactions')
         ->join('buckets', 'transactions.bucket_id', '=', 'buckets.id')
         ->select('transactions.*', 'buckets.name')
-        ->where('buckets.user_id', '=', $user_id)->get();
+        ->where('buckets.user_id', '=', $user_id)
+        ->orderBy('date', 'desc')
+        ->get();
   }
 }

@@ -1,6 +1,8 @@
+import TransactionFilter from "@/Components/TransactionFilter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { usePage } from "@inertiajs/react";
-import { ReactElement, JSXElementConstructor, ReactNode } from "react";
+import { parse } from "path";
+import { ReactElement, JSXElementConstructor, ReactNode, useState, useMemo } from "react";
 import { JSX } from "react/jsx-runtime";
 
 const TransactionRowDateHeader = ({ date }) => {
@@ -20,26 +22,31 @@ const TransactionRow = ({ bucketName, description, amount }) => {
 }
 
 export default function Transactions() {
+  const buckets = usePage().props.buckets
   const transactionsWithBuckets: any[] = usePage().props.transactions_with_buckets;
 
-  const parsedDates: any[] = []
-  const tableComponents: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | JSX.Element[] | null | undefined = []
+  const [bucketFilter, setBucketFilter] = useState<number | null>(-1)
 
-  transactionsWithBuckets.forEach(item => {
-    const date = new Date(item.date).toLocaleDateString()
-    if (!parsedDates.includes(date)) {
-      tableComponents.push(<TransactionRowDateHeader date={date} />)
-      parsedDates.push(date)
-      tableComponents.push(
-        <TransactionRow bucketName={item.name} description={item.description} amount={item.amount} />
-      )
+  const tableComponents = useMemo(() => {
+    const parsedDates: any[] = []
+    return transactionsWithBuckets.filter(transaction => {
+      return bucketFilter !== -1 ? transaction.bucket_id === bucketFilter : true
+    })
+      .map(transaction => {
+        const date = new Date(transaction.date).toLocaleDateString()
+        if (!parsedDates.includes(date)) {
+          parsedDates.push(date)
+          return (
+            <>
+              <TransactionRowDateHeader date={date} />
+              <TransactionRow bucketName={transaction.name} description={transaction.description} amount={transaction.amount} />
+            </>
+          )
+        }
+        return <TransactionRow bucketName={transaction.name} description={transaction.description} amount={transaction.amount} />
+      })
 
-    } else {
-      tableComponents.push(
-        <TransactionRow bucketName={item.name} description={item.description} amount={item.amount} />
-      )
-    }
-  })
+  }, [transactionsWithBuckets, bucketFilter])
 
 
   return (
@@ -47,6 +54,10 @@ export default function Transactions() {
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg p-8">
+            <TransactionFilter
+              bucketFilter={bucketFilter}
+              setBucketFilter={setBucketFilter}
+              buckets={buckets} />
             {tableComponents}
           </div>
         </div>

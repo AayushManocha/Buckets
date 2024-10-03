@@ -38,7 +38,7 @@ export default function Authenticated({
                                 </NavLink>
                                 <NavLink
                                     href={route('transaction.index')}
-                                    active={route().current('transaction')}
+                                    active={route().current('transaction.index')}
                                 >
                                     Transactions
                                 </NavLink>
