@@ -11,16 +11,17 @@ import TextInput from "./TextInput";
 type AddTransactionModalProps = {
   show: boolean;
   onClose: () => void;
+  bucketId?: number
 };
 
-function AddTransactionModal({ show, onClose }: AddTransactionModalProps) {
+function AddTransactionModal({ show, onClose, bucketId }: AddTransactionModalProps) {
 
   const buckets = usePage().props.buckets;
-  const firstBucketId = buckets?.length > 0 ? buckets[0].id : null;
+  const firstBucketId = bucketId
   const bucket = usePage().props.bucket;
 
   const { data, setData, post, errors, wasSuccessful } = useForm({
-    bucket_id: bucket?.id || firstBucketId,
+    bucket_id: firstBucketId,
     amount: '',
     description: '',
     date: new Date(),
@@ -42,6 +43,7 @@ function AddTransactionModal({ show, onClose }: AddTransactionModalProps) {
           id="bucket-select"
           value={data.bucket_id}
           onChange={(e) => setData('bucket_id', e.target.value)}
+          disabled={bucketId !== null}
           className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
         >
           {buckets.map((bucket) => (
@@ -84,12 +86,20 @@ function AddTransactionModal({ show, onClose }: AddTransactionModalProps) {
   )
 }
 
-export default function AddTransactionButton() {
+type AddTransactionButtonProps = {
+  bucketId?: number
+}
+
+export default function AddTransactionButton({ bucketId }: AddTransactionButtonProps) {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
       <PrimaryButton onClick={() => setShowModal(true)}>Add Transaction</PrimaryButton>
-      <AddTransactionModal show={showModal} onClose={() => setShowModal(false)} />
+      <AddTransactionModal
+        bucketId={bucketId}
+        show={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </>
 
   );

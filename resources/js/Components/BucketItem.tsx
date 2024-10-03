@@ -1,4 +1,5 @@
 import { router } from "@inertiajs/react";
+import AddTransactionButton from "./AddTransactionButton";
 
 export default function BucketItem({ bucket }) {
 
@@ -8,13 +9,12 @@ export default function BucketItem({ bucket }) {
   }
 
   return (
-    <div className="bg-white shadow-md sm:rounded-md p-6 w-60 h-60" onClick={handleNavigation}>
-      <div className="flex justify-between items-center">
-        <div>
-          <span className="text-md font-semibold text-gray-500">{bucket.name}</span>
-          <p className="text-2xl text-gray-900">${bucket.remaining}</p>
-        </div>
+    <div className="bg-white shadow-md sm:rounded-md p-6 w-52 h-52 flex flex-col justify-between">
+      <div>
+        <span onClick={handleNavigation} className="text-md font-semibold text-gray-500">{bucket.name}</span>
+        <p className="text-2xl text-gray-900">${bucket.remaining}</p>
       </div>
+      <AddTransactionButton bucketId={bucket.id} />
     </div>
   )
 }

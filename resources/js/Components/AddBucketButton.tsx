@@ -13,12 +13,17 @@ type AddBucketModalProps = {
 
 function AddBucketModal({ show, onClose }: AddBucketModalProps) {
 
-  const { data, setData, post, errors, wasSuccessful } = useForm({
+  const { data, setData, post, errors, wasSuccessful, reset } = useForm({
     name: '',
     budget: ''
   })
 
-  useEffect(() => { onClose() }, [wasSuccessful])
+  useEffect(() => {
+    if (wasSuccessful) {
+      onClose()
+      reset()
+    }
+  }, [wasSuccessful])
 
   const handleSubmit = () => {
     post(route('bucket.create'));

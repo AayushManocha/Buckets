@@ -1,9 +1,7 @@
 import TransactionFilter from "@/Components/TransactionFilter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { usePage } from "@inertiajs/react";
-import { parse } from "path";
-import { ReactElement, JSXElementConstructor, ReactNode, useState, useMemo } from "react";
-import { JSX } from "react/jsx-runtime";
+import { useMemo, useState } from "react";
 
 const TransactionRowDateHeader = ({ date }) => {
   return (
@@ -38,17 +36,13 @@ export default function Transactions() {
   const [bucketFilter, setBucketFilter] = useState<number | null>(-1)
 
   const totalSpend = useMemo(() => {
-    var sum = 0
-    transactionsWithBuckets.filter(transaction => {
-      return bucketFilter !== -1 ? transaction.bucket_id === bucketFilter : true
-    })
-      .forEach(transaction => {
-        sum += transaction.amount
-      })
-    return sum
-  }, [transactionsWithBuckets, bucketFilter])
-
-  console.log('totalSpend: ', totalSpend)
+    return transactionsWithBuckets.reduce((sum, transaction) => {
+      if (bucketFilter !== -1 ? transaction.bucket_id === bucketFilter : true) {
+        return sum + transaction.amount;
+      }
+      return sum;
+    }, 0);
+  }, [transactionsWithBuckets, bucketFilter]);
 
   const tableComponents = useMemo(() => {
     const parsedDates: any[] = []

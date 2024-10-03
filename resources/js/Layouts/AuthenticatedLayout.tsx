@@ -48,7 +48,6 @@ export default function Authenticated({
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3 flex gap-x-4">
                                 <AddBucketButton />
-                                <AddTransactionButton />
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
