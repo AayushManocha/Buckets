@@ -15,4 +15,9 @@ class Transaction extends Model
         'description',
         'date',
     ];
+
+    public function bucket()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
 }

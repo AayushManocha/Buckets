@@ -36,6 +36,12 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('transaction.index')}
+                                    active={route().current('transaction')}
+                                >
+                                    Transactions
+                                </NavLink>
                             </div>
                         </div>
 

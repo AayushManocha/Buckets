@@ -30,6 +30,7 @@ Route::get('/dashboard', function () {
 Route::post('/bucket', [BucketController::class, 'create'])->name('bucket.create');
 Route::get('/bucket/{bucketId}', [BucketController::class, 'show'])->name('bucket.show');
 
+Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::post('/transaction', [TransactionController::class, 'create'])->name('transaction.create');
 
 Route::middleware('auth')->group(function () {

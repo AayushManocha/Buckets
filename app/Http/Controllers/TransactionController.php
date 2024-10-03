@@ -3,9 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Transaction;
+use App\Models\Bucket;
+use App\Services\TransactionService;
+use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class TransactionController extends Controller
 {
+    public function index(Request $request)
+    {
+        $transactions_for_current_user = TransactionService::getAllTransactionsForUser($request->user()->id);
+
+        return Inertia::render('Transactions', [
+            // Needed for modal buttons on navigation bar
+            'buckets' => $request->user()->buckets,
+            'transactions_with_buckets' => $transactions_for_current_user,
+        ]);
+    }
+
     public function create(Request $request)
     {
         $request->validate([

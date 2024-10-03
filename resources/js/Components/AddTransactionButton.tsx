@@ -27,13 +27,14 @@ function AddTransactionModal({ show, onClose }: AddTransactionModalProps) {
 
   })
 
+  console.log('data: ', data)
+
   useEffect(() => { onClose() }, [wasSuccessful])
 
   const handleSubmit = () => {
     post(route('transaction.create'));
   }
 
-  console.log("🚀 ~ AddTransactionModal ~ data:", data)
   return (
     <Modal maxWidth="lg" show={show} onClose={onClose} closeable>
       <div className="flex flex-col p-12 justify-between">
