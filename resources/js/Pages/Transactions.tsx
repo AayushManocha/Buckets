@@ -21,11 +21,34 @@ const TransactionRow = ({ bucketName, description, amount }) => {
   )
 }
 
+const Metric = ({ title, amount }) => {
+  return (
+    <div className="flex flex-col items-center shadow-xl border py-2 my-2">
+      <span className="font-light text-md">{title}</span>
+      <span className="font-bold text-3xl">${amount}</span>
+    </div>
+  )
+}
+
 export default function Transactions() {
   const buckets = usePage().props.buckets
   const transactionsWithBuckets: any[] = usePage().props.transactions_with_buckets;
+  const totalTransactions = usePage().props.total_transactions
 
   const [bucketFilter, setBucketFilter] = useState<number | null>(-1)
+
+  const totalSpend = useMemo(() => {
+    var sum = 0
+    transactionsWithBuckets.filter(transaction => {
+      return bucketFilter !== -1 ? transaction.bucket_id === bucketFilter : true
+    })
+      .forEach(transaction => {
+        sum += transaction.amount
+      })
+    return sum
+  }, [transactionsWithBuckets, bucketFilter])
+
+  console.log('totalSpend: ', totalSpend)
 
   const tableComponents = useMemo(() => {
     const parsedDates: any[] = []
@@ -58,6 +81,7 @@ export default function Transactions() {
               bucketFilter={bucketFilter}
               setBucketFilter={setBucketFilter}
               buckets={buckets} />
+            <Metric title="Total Spending" amount={totalSpend} />
             {tableComponents}
           </div>
         </div>

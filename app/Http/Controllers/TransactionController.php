@@ -16,11 +16,13 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $transactions_for_current_user = TransactionService::getAllTransactionsForUser($request->user()->id);
+        $totalTransactions = TransactionService::getTotalTransactionsSumForUser($request->user()->id);
 
         return Inertia::render('Transactions', [
             // Needed for modal buttons on navigation bar
             'buckets' => $request->user()->buckets,
             'transactions_with_buckets' => $transactions_for_current_user,
+            'total_transactions' => $totalTransactions
         ]);
     }
 

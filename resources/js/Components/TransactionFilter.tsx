@@ -3,8 +3,8 @@ import { useMemo } from "react"
 export default function TransactionFilter({ bucketFilter, setBucketFilter, buckets }) {
   const allBuckets = useMemo(() => {
     return [
+      { name: 'All Buckets', id: -1 },
       ...buckets,
-      { name: 'All Buckets', id: -1 }
     ]
   }, [buckets])
 

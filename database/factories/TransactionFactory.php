@@ -16,10 +16,14 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = $this->faker;
+        $startOfMonth = now()->startOfMonth();
+        $endOfMonth = now()->endOfMonth();
+
         return [
-            'amount' => 10,
+            'amount' => $faker->numberBetween(1, 100),
             'description' => 'test transaction',
-            'date' => fake()->date(),
+            'date' => $faker->dateTimeBetween($startOfMonth, $endOfMonth)->format('Y-m-d'),
         ];
     }
 }
