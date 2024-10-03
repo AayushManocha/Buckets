@@ -5,23 +5,23 @@ import { useMemo, useState } from "react";
 
 const TransactionRowDateHeader = ({ date }) => {
   return (
-    <span className="w-full bg-gray-400 inline-block py-2 px-1 mb-4 rounded-md">{date}</span>
+    <span className="w-full bg-gray-400 inline-block py-2 px-1 my-4 rounded-md col-span-full">{date}</span>
   )
 }
 
 const TransactionRow = ({ bucketName, description, amount }) => {
   return (
-    <div className="flex flex-row gap-x-4 mb-2">
+    <>
       <span className="font-bold">{bucketName}</span>
       <span>${amount}</span>
       <span>{description}</span>
-    </div>
+    </>
   )
 }
 
 const Metric = ({ title, amount }) => {
   return (
-    <div className="flex flex-col items-center shadow-xl border py-2 my-2">
+    <div className="flex flex-col items-center shadow-xl border py-2 mt-2">
       <span className="font-light text-md">{title}</span>
       <span className="font-bold text-3xl">${amount}</span>
     </div>
@@ -31,7 +31,6 @@ const Metric = ({ title, amount }) => {
 export default function Transactions() {
   const buckets = usePage().props.buckets
   const transactionsWithBuckets: any[] = usePage().props.transactions_with_buckets;
-  const totalTransactions = usePage().props.total_transactions
 
   const [bucketFilter, setBucketFilter] = useState<number | null>(-1)
 
@@ -76,7 +75,9 @@ export default function Transactions() {
               setBucketFilter={setBucketFilter}
               buckets={buckets} />
             <Metric title="Total Spending" amount={totalSpend} />
-            {tableComponents}
+            <div className="grid grid-cols-3">
+              {tableComponents}
+            </div>
           </div>
         </div>
       </div>
