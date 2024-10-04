@@ -53,13 +53,17 @@ function AddBucketModal({ show, onClose }: AddBucketModalProps) {
   )
 }
 
-export default function AddBucketButton() {
+type AddBucketProps = {
+  className?: string
+}
+
+export default function AddBucketButton({ className }: AddBucketProps) {
   const [showModal, setShowModal] = useState(false);
   return (
-    <>
+    <div className={`${className}`}>
       <PrimaryButton onClick={() => setShowModal(true)}>Add Bucket</PrimaryButton>
       <AddBucketModal show={showModal} onClose={() => setShowModal(false)} />
-    </>
+    </div>
 
   );
 }

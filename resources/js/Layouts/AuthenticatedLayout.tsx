@@ -92,6 +92,7 @@ export default function Authenticated({
                         </div>
 
                         <div className="-me-2 flex items-center sm:hidden">
+                            <AddBucketButton className="mr-4" />
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -146,6 +147,12 @@ export default function Authenticated({
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('transaction.index')}
+                            active={route().current('transaction.index')}
+                        >
+                            Transactions
                         </ResponsiveNavLink>
                     </div>
 

@@ -15,8 +15,8 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $transactions_for_current_user = TransactionService::getAllTransactionsForUser($request->user()->id);
-        $totalTransactions = TransactionService::getTotalTransactionsSumForUser($request->user()->id);
+        $transactions_for_current_user = TransactionService::getAllTransactionsForUserByCurrentMonth($request->user()->id);
+        $totalTransactions = TransactionService::getTotalTransactionsSumForUserInCurrentMonth($request->user()->id);
 
         return Inertia::render('Transactions', [
             // Needed for modal buttons on navigation bar
