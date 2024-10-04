@@ -1,8 +1,6 @@
 import BucketItem from '@/Components/BucketItem';
-import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import React from 'react';
 
 export default function Dashboard({ buckets }) {
     return (

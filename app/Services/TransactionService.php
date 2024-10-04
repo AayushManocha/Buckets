@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Services;
+
+use App\Models\Bucket;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -59,17 +62,28 @@ class TransactionService
         ->sum('transactions.amount');
   }
 
+  private static function getAllBucketsForCurrentUser($user_id)
+  {
+    return Bucket::all()->where('user_id', $user_id);
+  }
+
   public static function getBucketsWithTransactionsForCurrentMonth($user_id)
   {
     $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
     $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
 
-    return DB::table('buckets')
-      ->join('transactions', 'buckets.id', '=', 'transactions.bucket_id')
-      ->select('buckets.*', 'transactions.amount')
-      ->where('buckets.user_id', '=', $user_id)
-      ->where('transactions.date', '>=', $startOfMonth)
-      ->where('transactions.date', '<=', $endOfMonth)
-      ->get();
+    $buckets = TransactionService::getAllBucketsForCurrentUser($user_id);
+
+    foreach($buckets as $bucket) {
+      $transaction_total = Transaction::all()
+        ->where('bucket_id', $bucket->id)
+        ->where('date', '>=', $startOfMonth)
+        ->where('date', '<=', $endOfMonth)
+        ->sum('amount');
+
+      $bucket['remaining'] = $bucket['budget'] - $transaction_total;
+    }
+
+    return $buckets;
   }
 }

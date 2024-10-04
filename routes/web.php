@@ -20,7 +20,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $buckets = TransactionService::getBucketsWithTransactionsForCurrentMonth(auth()->user()->id);
     return Inertia::render('Dashboard', [
-        'buckets' => auth()->user()->buckets,
+        'buckets' => $buckets,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::post('/transaction', [TransactionController::class, 'create'])->name('transaction.create');
+    Route::delete('/transaction', [TransactionController::class, 'destroy'])->name('transaction.destroy');
 });
 
 require __DIR__ . '/auth.php';

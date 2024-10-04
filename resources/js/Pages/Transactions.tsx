@@ -1,6 +1,7 @@
+import DangerButton from "@/Components/DangerButton";
 import TransactionFilter from "@/Components/TransactionFilter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { usePage } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { useMemo, useState } from "react";
 
 const TransactionRowDateHeader = ({ date }) => {
@@ -9,12 +10,21 @@ const TransactionRowDateHeader = ({ date }) => {
   )
 }
 
-const TransactionRow = ({ bucketName, description, amount }) => {
+const TransactionRow = ({ bucketName, description, amount, id }) => {
+  const { delete: destroy } = useForm({
+    transaction_id: id
+  })
+  const handleDelete = () => {
+    destroy(route('transaction.destroy'))
+  }
   return (
     <>
       <span className="font-bold">{bucketName}</span>
-      <span>${amount}</span>
+      <span>${amount.toFixed(2)}</span>
       <span>{description}</span>
+      <div>
+        <DangerButton onClick={handleDelete}>Delete</DangerButton>
+      </div>
     </>
   )
 }
@@ -33,6 +43,14 @@ export default function Transactions() {
   const transactionsWithBuckets: any[] = usePage().props.transactions_with_buckets;
 
   const [bucketFilter, setBucketFilter] = useState<number | null>(-1)
+  const bucketFilterName = useMemo(() => {
+    const maybeBucket = buckets.filter(bucket => bucket.id === bucketFilter)
+    const bucketExists = maybeBucket.length > 0
+    if (bucketExists) {
+      return maybeBucket[0].name
+    }
+    else return "All Buckets"
+  }, [bucketFilter])
 
   const totalSpend = useMemo(() => {
     return transactionsWithBuckets.reduce((sum, transaction) => {
@@ -55,11 +73,19 @@ export default function Transactions() {
           return (
             <>
               <TransactionRowDateHeader date={date} />
-              <TransactionRow bucketName={transaction.name} description={transaction.description} amount={transaction.amount} />
+              <TransactionRow
+                id={transaction.id}
+                bucketName={transaction.name}
+                description={transaction.description}
+                amount={transaction.amount} />
             </>
           )
         }
-        return <TransactionRow bucketName={transaction.name} description={transaction.description} amount={transaction.amount} />
+        return <TransactionRow
+          id={transaction.id}
+          bucketName={transaction.name}
+          description={transaction.description}
+          amount={transaction.amount} />
       })
 
   }, [transactionsWithBuckets, bucketFilter])
@@ -74,8 +100,8 @@ export default function Transactions() {
               bucketFilter={bucketFilter}
               setBucketFilter={setBucketFilter}
               buckets={buckets} />
-            <Metric title="Total Spending" amount={totalSpend} />
-            <div className="grid grid-cols-3">
+            <Metric title={`Total Spending - ${bucketFilterName}`} amount={totalSpend} />
+            <div className="grid grid-cols-4 gap-y-3">
               {tableComponents}
             </div>
           </div>

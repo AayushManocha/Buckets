@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Transaction;
-use App\Models\Bucket;
-use App\Services\TransactionService;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Inertia\Inertia;
+use App\Services\TransactionService;
 
 class TransactionController extends Controller
 {
@@ -26,6 +23,23 @@ class TransactionController extends Controller
         ]);
     }
 
+    public function destroy(Request $request)
+    {
+        $transaction_id = $request->transaction_id;
+        $user_id = $request->user()->id;
+
+        $maybeTransaction= DB::table('transactions')
+        ->join('buckets', 'buckets.id', '=', 'transactions.bucket_id')
+        ->where('buckets.user_id', '=', $user_id)
+        ->where('transactions.id', '=', $transaction_id)
+        ->get()
+        ->first();
+
+
+        $transaction = Transaction::findOrFail($maybeTransaction->id);
+        $transaction->delete();
+    }
+
     public function create(Request $request)
     {
         $request->validate([
@@ -40,4 +54,6 @@ class TransactionController extends Controller
 
         redirect()->route('dashboard');
     }
+
+  
 }
