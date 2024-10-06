@@ -68,7 +68,7 @@ export default function Transactions({ buckets, transactionsWithBuckets }: Trans
   }, [bucketFilter])
 
   const totalSpend = useMemo(() => {
-    return transactionsWithBuckets.reduce((sum, transaction) => {
+    return transactionsWithBuckets?.reduce((sum, transaction) => {
       if (bucketFilter !== -1 ? transaction.bucket_id === bucketFilter : true) {
         return sum + transaction.amount;
       }
@@ -78,7 +78,7 @@ export default function Transactions({ buckets, transactionsWithBuckets }: Trans
 
   const tableComponents = useMemo(() => {
     const parsedDates: any[] = []
-    return transactionsWithBuckets.filter(transaction => {
+    return transactionsWithBuckets?.filter(transaction => {
       return bucketFilter !== -1 ? transaction.bucket_id === bucketFilter : true
     })
       .map(transaction => {
@@ -111,14 +111,18 @@ export default function Transactions({ buckets, transactionsWithBuckets }: Trans
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg p-8">
-            <TransactionFilter
-              bucketFilter={bucketFilter}
-              setBucketFilter={setBucketFilter}
-              buckets={buckets} />
-            <Metric title={`Total Spending - ${bucketFilterName}`} amount={totalSpend} />
-            <div className="grid grid-cols-4 gap-y-3">
-              {tableComponents}
-            </div>
+            {transactionsWithBuckets ? (
+              <>
+                <TransactionFilter
+                  bucketFilter={bucketFilter}
+                  setBucketFilter={setBucketFilter}
+                  buckets={buckets} />
+                <Metric title={`Total Spending - ${bucketFilterName}`} amount={totalSpend} />
+                <div className="grid grid-cols-4 gap-y-3">
+                  {tableComponents}
+                </div>
+              </>
+            ) : <span>No Transactions Yet</span>}
           </div>
         </div>
       </div>

@@ -37,5 +37,5 @@ export type DashboardPageProps = {
 
 export type TransactionPageProps = {
     buckets: Bucket[]
-    transactionsWithBuckets: (Transaction & { name: string })[]
+    transactionsWithBuckets?: (Transaction & { name: string })[]
 }
