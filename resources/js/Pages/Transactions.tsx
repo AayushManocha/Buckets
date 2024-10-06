@@ -117,7 +117,7 @@ export default function Transactions({ buckets, transactionsWithBuckets }: Trans
                   bucketFilter={bucketFilter}
                   setBucketFilter={setBucketFilter}
                   buckets={buckets} />
-                <Metric title={`Total Spending - ${bucketFilterName}`} amount={totalSpend} />
+                <Metric title={`Total Spending - ${bucketFilterName}`} amount={totalSpend || 0} />
                 <div className="grid grid-cols-4 gap-y-3">
                   {tableComponents}
                 </div>
