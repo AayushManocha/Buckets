@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,11 @@ class Transaction extends Model
         'description',
         'date',
     ];
+
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = Carbon::parse($value);
+    }
 
     public function bucket()
     {
