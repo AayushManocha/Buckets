@@ -78,7 +78,7 @@ class TransactionService
       $transaction_total = Transaction::all()
         ->where('bucket_id', $bucket->id)
         ->where('date', '>=', $startOfMonth)
-       t  ->where('date', '<=', $endOfMonth)
+        ->where('date', '<=', $endOfMonth)
         ->sum('amount');
 
       $bucket['remaining'] = $bucket['budget'] - $transaction_total;
