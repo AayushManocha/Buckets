@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-export default function TransactionFilter({ bucketFilter, setBucketFilter, buckets }) {
+export default function TransactionFilter({ bucketFilter, setBucketFilter, buckets }: any) {
   const allBuckets = useMemo(() => {
     return [
       { name: 'All Buckets', id: -1 },

@@ -123,7 +123,7 @@ const DropdownLink = ({
     );
 };
 
-const DropdownOption = ({ className, children, ...props }) => {
+const DropdownOption = ({ className, children, ...props }: any) => {
     return (
         <Link
             {...props}

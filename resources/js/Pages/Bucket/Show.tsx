@@ -1,12 +1,13 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { Bucket, Transaction } from "@/types";
 import { usePage } from "@inertiajs/react";
 
 export default function BucketShow() {
-  const bucket = usePage().props.bucket;
-  const transactions = usePage().props.transactions;
-  const totalSpend = usePage().props.total_spent;
-  const remaining = usePage().props.remaining;
+  const bucket = usePage().props.bucket as Bucket;
+  const transactions = usePage().props.transactions as Transaction[];
+  const totalSpend = usePage().props.total_spen as number;
+  const remaining = usePage().props.remaining as number;
 
   return (
     <AuthenticatedLayout>
