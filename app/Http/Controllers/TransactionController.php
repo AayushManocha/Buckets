@@ -46,7 +46,7 @@ class TransactionController extends Controller
             'bucket_id' => ['required', 'exists:buckets,id'],
             'amount' => ['required', 'numeric'],
             'description' => ['max:255'],
-            'date' => ['required', 'date'],
+            'date' => ['required']
         ]);
 
         $bucket = $request->user()->buckets()->findOrFail($request->bucket_id);
