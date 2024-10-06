@@ -55,7 +55,9 @@ const Metric = ({ title, amount }: MetricProps) => {
   )
 }
 
-export default function Transactions({ buckets, transactionsWithBuckets }: TransactionPageProps) {
+export default function Transactions(props: TransactionPageProps) {
+  const { buckets, transactions_with_buckets: transactionsWithBuckets } = props
+  console.log('props: ', props)
 
   const [bucketFilter, setBucketFilter] = useState<number | null>(-1)
   const bucketFilterName = useMemo(() => {
@@ -105,6 +107,7 @@ export default function Transactions({ buckets, transactionsWithBuckets }: Trans
 
   }, [transactionsWithBuckets, bucketFilter])
 
+  console.log('transactionsWithBuckets: ', transactionsWithBuckets)
 
   return (
     <AuthenticatedLayout>
