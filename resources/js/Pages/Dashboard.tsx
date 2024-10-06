@@ -1,8 +1,9 @@
 import BucketItem from '@/Components/BucketItem';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { DashboardPageProps } from '@/types';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ buckets }) {
+export default function Dashboard({ buckets }: DashboardPageProps) {
     return (
         <AuthenticatedLayout >
             <Head title="Dashboard" />

@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import PrimaryButton from "./PrimaryButton";
 import Spacer from "./Spacer";
 import TextInput from "./TextInput";
+import { Bucket } from "@/types";
 
 
 type AddTransactionModalProps = {
@@ -16,9 +17,8 @@ type AddTransactionModalProps = {
 
 function AddTransactionModal({ show, onClose, bucketId }: AddTransactionModalProps) {
 
-  const buckets = usePage().props.buckets;
+  const buckets = usePage().props.buckets as Bucket[];
   const firstBucketId = bucketId
-  const bucket = usePage().props.bucket;
 
   const { data, setData, post, errors, wasSuccessful } = useForm({
     bucket_id: firstBucketId,
@@ -42,7 +42,7 @@ function AddTransactionModal({ show, onClose, bucketId }: AddTransactionModalPro
         <select
           id="bucket-select"
           value={data.bucket_id}
-          onChange={(e) => setData('bucket_id', e.target.value)}
+          onChange={(e) => setData('bucket_id', parseInt(e.target.value))}
           disabled={bucketId !== null}
           className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
         >
@@ -70,6 +70,8 @@ function AddTransactionModal({ show, onClose, bucketId }: AddTransactionModalPro
         <Spacer size={6} />
 
         <InputLabel>Date</InputLabel>
+        {/* 
+      // @ts-ignore */}
         <CustomDatePicker selectedDate={data.date} setSelectedDate={(date) => setData('date', date)} />
         <p className="text-red-500">{errors.date}</p>
 
@@ -101,6 +103,5 @@ export default function AddTransactionButton({ bucketId }: AddTransactionButtonP
         onClose={() => setShowModal(false)}
       />
     </>
-
   );
 }

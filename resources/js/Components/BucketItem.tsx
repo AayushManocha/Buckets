@@ -1,7 +1,12 @@
 import { router } from "@inertiajs/react";
 import AddTransactionButton from "./AddTransactionButton";
+import { Bucket } from "@/types";
 
-export default function BucketItem({ bucket }) {
+type BucketItemProps = {
+  bucket: Bucket
+}
+
+export default function BucketItem({ bucket }: BucketItemProps) {
 
   const handleNavigation = () => {
     console.log('Navigating to bucket', bucket.id);
