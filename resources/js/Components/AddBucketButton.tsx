@@ -1,10 +1,10 @@
+import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import InputLabel from "./InputLabel";
 import Modal from "./Modal";
 import PrimaryButton from "./PrimaryButton";
-import InputLabel from "./InputLabel";
-import TextInput from "./TextInput";
 import Spacer from "./Spacer";
-import { useForm } from "@inertiajs/react";
+import TextInput from "./TextInput";
 
 type AddBucketModalProps = {
   show: boolean;
